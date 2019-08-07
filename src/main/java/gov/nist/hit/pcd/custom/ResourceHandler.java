@@ -12,6 +12,8 @@ import gov.nist.hit.pcd.custom.model.MDCterm;
 
 public class ResourceHandler {
 
+	private static final String VERSION = "october2018";
+	
 	private static List<MDCterm> mdcValues;
 	private static List<MDCUnitsterm> mdcUnitsTerms;
 	
@@ -31,7 +33,7 @@ public class ResourceHandler {
 	public List<MDCterm> loadMDC(){
 		
 		List<MDCterm> values = new ArrayList<>();
-		try(BufferedReader br= new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream("/" + "mdccodes.csv")))) {
+		try(BufferedReader br= new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream("/"+VERSION+"/" + "mdccodes.csv")))) {
 		    values = br.lines().map(line -> {return new MDCterm(line.split(",")[0],line.split(",")[1]);}).collect(Collectors.toList());
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -42,7 +44,7 @@ public class ResourceHandler {
 	public List<MDCUnitsterm> loadMdcUnitsTerms(){
 		
 		List<MDCUnitsterm> values = new ArrayList<>();
-		try(BufferedReader br= new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream("/" + "units.csv")))) {
+		try(BufferedReader br= new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream("/"+VERSION+"/" + "units.csv")))) {
 		    values = br.lines().map(line -> {return new MDCUnitsterm(line.split(",")); }).collect(Collectors.toList());
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -80,14 +82,34 @@ public class ResourceHandler {
 	}
 	
 	
-	public boolean unitIsValid (String refid, String unit) {
+	public boolean unitIsValid (String code, String refid, String unit) {
+		// if no unit present, no need to check..
+		
+		if (unit == null || unit.isEmpty()) {
+			return true;
+		}
 		for (MDCUnitsterm mdc : mdcUnitsTerms) {
-			if (mdc.getRefid().equals(refid)) {
-				if (mdc.getUnits().contains(unit)) {
-					return true;
-				}else {
-					return false;
+
+			if (mdc.getCode().equals(code) || mdc.getRefid().equals(refid)) {
+				for (String u : mdc.getUnits()) {
+					if (u.contains("_X_")){
+						if (u.equals(unit) || unit.matches(u.replace("_X_", "_.*"))) {
+	
+							return true;
+						}
+					}else if (u.contains("_X")){ //suffix
+						if (u.equals(unit) || unit.matches(u.replace("_X", "_.+"))) {
+	
+							return true;
+						}
+					}else {
+						
+						if (u.equals(unit)){
+							return true;
+						}
+					}
 				}
+				return false;
 			}
 		}
 		//couldn't find refid, no errors

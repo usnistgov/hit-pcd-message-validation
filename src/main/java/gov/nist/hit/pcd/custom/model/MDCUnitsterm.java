@@ -6,20 +6,26 @@ import java.util.List;
 
 public class MDCUnitsterm {
 
-	private List<String> units;
+	private String code;
 	private String refid;
+
+	private List<String> units;
+
 	
 	
 
-	public MDCUnitsterm(String[] refAndunits) {
-		refid = refAndunits[0];
-		units = new ArrayList<>(Arrays.asList(refAndunits));
-		units.remove(0);
+	public MDCUnitsterm(String[] codeRefAndunits) {
+		code = codeRefAndunits[0];
+		refid = codeRefAndunits[1];		
+		units = new ArrayList<>(Arrays.asList(codeRefAndunits));
+		units.remove(0); // remove code
+		units.remove(0); // remoce refid
 	}
 
 
-	public MDCUnitsterm(String refid,List<String>  units) {
+	public MDCUnitsterm(String code,String refid,List<String>  units) {
 		super();
+		this.code = code;
 		this.units = units;
 		this.refid = refid;
 	}
@@ -44,6 +50,17 @@ public class MDCUnitsterm {
 		this.refid = refid;
 	}
 
+
+	public String getCode() {
+		return code;
+	}
+
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	
 
 	
 	

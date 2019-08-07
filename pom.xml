@@ -83,6 +83,6 @@
 		</dependency>
 	</dependencies>
 	<properties>
-		<hitcorehl7v2.version>1.0.19</hitcorehl7v2.version>
+		<hitcorehl7v2.version>1.0.20-SNAPSHOT</hitcorehl7v2.version>
 	</properties>
 </project>

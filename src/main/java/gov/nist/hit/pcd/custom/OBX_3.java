@@ -1,8 +1,7 @@
 package gov.nist.hit.pcd.custom;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+
 
 import hl7.v2.instance.Element;
 import hl7.v2.instance.Query;
@@ -23,11 +22,12 @@ public class OBX_3 {
      * @return true if OBX-3.3 not MDC, true if OBX-3.2 and OBX-3.1 are valid, false otherwise
      */
 		
-	public boolean assertion(hl7.v2.instance.Element e) {
+	public java.util.List<String> assertionWithCustomMessages(hl7.v2.instance.Element e) {
+		java.util.List<String> messages = new ArrayList<String>();
         List<Element> OBXList = Query.query(e, "3[1]").get();
         if (OBXList == null || OBXList.size() == 0) {
             // OBR-3 is not present
-            return true;
+            return messages;
         }
         
         Iterator<Element> it = OBXList.iterator();
@@ -43,24 +43,25 @@ public class OBX_3 {
                
             // ignore 0 code terms or MDCX terms 
             if (OBX3_1.equals("0") || OBX3_2.startsWith("MDCX_")) {
-            		return true;
+            		return messages;
             }
             
             
             if (OBX3_3.equals("MDC")) {
             	ResourceHandler rh = new ResourceHandler();
             	if (rh.dupletIsValid(OBX3_1, OBX3_2)) {
-            		return true;
+            		return messages;
             	}else {
-            		return false;
+            		messages.add("The REFID "+OBX3_2+" does not match with the provided code "+OBX3_1);
+            		return messages;
             	}
             	
             }else {
-            		return true;
+            		return messages;
             }
             
         }
         
-        return true;
+        return null;
     }	
 }
