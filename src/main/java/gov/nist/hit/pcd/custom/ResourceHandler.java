@@ -12,7 +12,7 @@ import gov.nist.hit.pcd.custom.model.MDCterm;
 
 public class ResourceHandler {
 
-	private static final String VERSION = "october2018";
+	private static final String VERSION = "march2021";
 	
 	private static List<MDCterm> mdcValues;
 	private static List<MDCUnitsterm> mdcUnitsTerms;

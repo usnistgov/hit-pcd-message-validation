@@ -48,7 +48,11 @@ public class OBX_3 {
             
             
             if (OBX3_3.equals("MDC")) {
-            	ResourceHandler rh = new ResourceHandler();
+            	ResourceHandler rh = new ResourceHandler();            	
+            	if(!rh.codeExists(OBX3_1)) {
+            		messages.add("The provided code "+OBX3_1+ " does not match any known REFID");
+            		return messages;
+            	}
             	if (rh.dupletIsValid(OBX3_1, OBX3_2)) {
             		return messages;
             	}else {
