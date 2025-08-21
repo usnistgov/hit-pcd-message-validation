@@ -5,7 +5,7 @@
 	<version>1.0.0-SNAPSHOT</version>
 
 	<properties>
-		<hl7v2Validation.version>1.7.0-SNAPSHOT</hl7v2Validation.version>
+		<hl7v2Validation.version>1.7.3</hl7v2Validation.version>
 		<java.version>1.8</java.version>
 	</properties>
 
